@@ -1,0 +1,37 @@
+body {
+  font-family: system, sans-serif;
+}
+
+label {
+  font-weight: 700;
+}
+
+input[type="email"] {
+  border-radius: 2px;
+  border: 1px solid #c0c0c0;
+  color: black;
+  padding: 4px 10px;
+  border-radius: 2px;
+}
+
+input[type="email"]:invalid {
+  border: 1px solid red;
+  box-shadow: none;
+}
+
+button[type="submit"] {
+  border: 0;
+  background-color: #e5e5e6;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+button[type="submit"] {
+}
+
+.Spoiler {
+  font-style: italic;
+  margin-top: 10px;
+}

@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "EmailAddressPlus",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Get a shiny email address.",
+    "description": "Description of the add-on."
+  }
+}
