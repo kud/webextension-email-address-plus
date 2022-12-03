@@ -1,18 +1,25 @@
+const getHostnameByTab = () => new URL(tab.url).hostname
+
+const getSettingEmailAddress = () => browser.storage.local.get("email").email
+
+const getLabeledEmailAddress = (emailAddress, hostname) => {
+  const [preEmail, postEmail] = emailAddress.split("@")
+
+  const fixedHostname = hostname.replace(".uk", "")
+
+  const hostnameArr = fixedHostname.split(".")
+
+  const label = hostnameArr[hostnameArr.length - 2]
+
+  return `${preEmail}+${label}@${postEmail}`
+}
+
 const handleClick = async (tab) => {
-  const url = new URL(tab.url)
-  const hostname = url.hostname
+  const hostname = getHostnameByTab(tab)
 
-  const { email } = await browser.storage.local.get("email")
+  const emailAddress = await getSettingEmailAddress()
 
-  const splitEmail = email.split("@")
-
-  const preEmail = splitEmail[0]
-  const postEmail = splitEmail[1]
-  const label = hostname.split(".")[hostname.split(".").length - 2]
-
-  const address = `${preEmail}+${label}@${postEmail}`
-
-  navigator.clipboard.writeText(address)
+  navigator.clipboard.writeText(getLabeledEmailAddress(emailAddress, hostname))
 }
 
 browser.browserAction.onClicked.addListener(handleClick)
