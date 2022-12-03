@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start:firefox": "web-ext run --firefox=nightly",
+    "build": "web-ext build"
+  },
+  "devDependencies": {
+    "web-ext": "7.4.0"
+  }
+}
