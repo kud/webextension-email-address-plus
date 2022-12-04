@@ -2,7 +2,7 @@
   "scripts": {
     "start:firefox": "web-ext run --firefox=nightly",
     "build": "rm -r web-ext-artifacts/*; web-ext build",
-    "publish": "open https://addons.mozilla.org/en-US/developers/addon/emailaddressplus/edit"
+    "publish": "open https://addons.mozilla.org/en-US/developers/addon/email-address-plus/edit"
   },
   "devDependencies": {
     "web-ext": "7.4.0"

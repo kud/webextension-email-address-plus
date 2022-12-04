@@ -3,7 +3,7 @@ browser.theme.getCurrent().then((theme) => {
   let iconPath
 
   // Set the icon path based on the current theme
-  if (theme.properties.color_scheme === "dark") {
+  if (theme.properties?.color_scheme === "dark") {
     iconPath = "icons/icon-dark.svg"
   } else {
     iconPath = "icons/icon.svg"
@@ -38,7 +38,35 @@ const handleClick = async (tab) => {
 
   const { email: emailAddress } = await getSettingEmailAddress()
 
-  navigator.clipboard.writeText(getLabeledEmailAddress(emailAddress, hostname))
+  if (emailAddress) {
+    navigator.clipboard.writeText(
+      getLabeledEmailAddress(emailAddress, hostname),
+    )
+
+    chrome.browserAction.setBadgeBackgroundColor({
+      color: "rgba(0,0,0,0)",
+    })
+
+    chrome.browserAction.setBadgeText({
+      text: "👍",
+    })
+
+    setTimeout(() => {
+      chrome.browserAction.setBadgeText({
+        text: "",
+      })
+    }, 2000)
+  } else {
+    chrome.browserAction.setBadgeText({
+      text: "X",
+    })
+
+    setTimeout(() => {
+      chrome.browserAction.setBadgeText({
+        text: "",
+      })
+    }, 3000)
+  }
 }
 
 browser.browserAction.onClicked.addListener(handleClick)
