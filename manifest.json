@@ -12,7 +12,8 @@
   },
 
   "browser_action": {
-    "default_title": "__MSG_extensionAction__"
+    "default_title": "__MSG_extensionAction__",
+    "default_popup": "tooltip.html"
   },
 
   "permissions": ["activeTab", "storage", "clipboardWrite"],
@@ -30,5 +31,15 @@
     "16": "icons/icon.svg",
     "32": "icons/icon.svg",
     "48": "icons/icon.svg"
+  },
+
+  "commands": {
+    "copy-labeled-email": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Copy labeled email address"
+    }
   }
 }

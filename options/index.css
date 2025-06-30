@@ -1,37 +1,202 @@
 body {
-  font-family: system, sans-serif;
+  font-family: "Segoe UI", "Inter", "Roboto", Arial, sans-serif;
+  background: #f9f9fb;
+  margin: 0;
+  padding: 0;
+}
+
+.prefs-form {
+  background: #fff;
+  max-width: 420px;
+  margin: 48px auto 0 auto;
+  padding: 32px 36px 28px 36px;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px 0 rgba(60, 60, 60, 0.07);
+  border: 1px solid #e0e0e6;
+}
+
+.form-group {
+  margin-bottom: 22px;
 }
 
 label {
-  font-weight: 700;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 6px;
+  color: #202124;
+  font-size: 1em;
 }
 
-input[type="email"] {
-  border-radius: 2px;
-  border: 1px solid #c0c0c0;
-  color: black;
-  padding: 4px 10px;
-  border-radius: 2px;
+.required {
+  color: #d70022;
+  font-size: 1em;
+  vertical-align: middle;
+}
+
+.example {
+  color: #888;
+  font-size: 0.95em;
+  font-style: italic;
+}
+
+input[type="email"],
+select {
+  border-radius: 6px;
+  border: 1.5px solid #c0c0c0;
+  color: #222;
+  padding: 8px 12px;
+  width: 100%;
+  font-size: 1em;
+  box-sizing: border-box;
+  margin-top: 2px;
+  background: #f9f9fb;
+  transition: border-color 0.2s;
+}
+
+input[type="email"]:focus,
+select:focus {
+  border-color: #0060df;
+  outline: none;
 }
 
 input[type="email"]:invalid {
-  border: 1px solid red;
+  border: 1.5px solid #d70022;
   box-shadow: none;
 }
 
-button[type="submit"] {
-  border: 0;
-  background-color: #e5e5e6;
-  color: black;
-  padding: 5px 10px;
-  border-radius: 2px;
-  cursor: pointer;
+input[type="email"].invalid {
+  border: 1.5px solid #d70022 !important;
+  background: #fff0f3;
+  box-shadow: 0 0 0 2px #ffd6e0;
 }
 
-button[type="submit"] {
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.save-btn {
+  border: none;
+  background-color: #0060df;
+  color: #fff;
+  padding: 8px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 500;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px 0 rgba(60, 60, 60, 0.04);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 110px;
+  justify-content: center;
+}
+
+.save-btn:hover {
+  background: #0250bb;
+}
+
+.save-btn .save-icon,
+.save-btn .saved-icon {
+  display: inline-block;
+  width: 1.2em;
+  text-align: center;
+}
+
+.save-btn .spinner {
+  width: 1.2em;
+  height: 1.2em;
+  border: 2.5px solid #fff;
+  border-top: 2.5px solid #0060df;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+  box-sizing: border-box;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.save-btn.saving {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.save-animation {
+  display: block;
+  margin: 18px auto 0 auto;
+  color: #27ae60;
+  font-size: 1.15em;
+  font-weight: 600;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px) scale(0.98);
+  transition: opacity 0.4s cubic-bezier(0.4, 2, 0.6, 1),
+    transform 0.4s cubic-bezier(0.4, 2, 0.6, 1);
+}
+
+.save-animation.show {
+  opacity: 1;
+  transform: translateY(0) scale(1.04);
 }
 
 .Spoiler {
   font-style: italic;
   margin-top: 10px;
+  margin-bottom: 20px;
+  color: #666;
+  text-align: center;
+  font-size: 0.97em;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #181a1b;
+    color: #f4f4f4;
+  }
+  .prefs-form {
+    background: #23272f;
+    border: 1px solid #23272f;
+    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.18);
+  }
+  label {
+    color: #f4f4f4;
+  }
+  input[type="email"],
+  select {
+    background: #23272f;
+    color: #f4f4f4;
+    border: 1.5px solid #444a57;
+  }
+  input[type="email"]:focus,
+  select:focus {
+    border-color: #4f8cff;
+  }
+  input[type="email"].invalid {
+    background: #3a2327;
+    border: 1.5px solid #d70022 !important;
+    box-shadow: 0 0 0 2px #4f1a1a;
+  }
+  .save-btn {
+    background-color: #4f8cff;
+    color: #fff;
+  }
+  .save-btn:hover {
+    background: #2563eb;
+  }
+  .Spoiler {
+    color: #b0b0b0;
+  }
 }
