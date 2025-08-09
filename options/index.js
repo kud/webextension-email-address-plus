@@ -6,10 +6,8 @@ const saveOptions = (e) => {
   emailInput.blur()
 
   const saveBtn = document.querySelector(".save-btn")
-  const originalHTML = "Save"
-  const loadingHTML =
-    '<span class="spinner" aria-label="Loading" style="margin-right:6px;"></span>Save'
-  const savedHTML = "Saved!"
+  const originalText = "Save"
+  const savedText = "Saved!"
 
   // Validate email is not empty
   if (!emailInput.value.trim()) {
@@ -22,7 +20,14 @@ const saveOptions = (e) => {
 
   // Set loading state
   saveBtn.classList.add("saving")
-  saveBtn.innerHTML = loadingHTML
+  // Create spinner element safely
+  const spinner = document.createElement("span")
+  spinner.className = "spinner"
+  spinner.setAttribute("aria-label", "Loading")
+  
+  saveBtn.textContent = ""
+  saveBtn.appendChild(spinner)
+  saveBtn.appendChild(document.createTextNode("Save"))
 
   browser.storage.local
     .set({
@@ -33,9 +38,9 @@ const saveOptions = (e) => {
       setTimeout(() => {
         // Show Saved!
         saveBtn.classList.remove("saving")
-        saveBtn.innerHTML = savedHTML
+        saveBtn.textContent = savedText
         setTimeout(() => {
-          saveBtn.innerHTML = originalHTML
+          saveBtn.textContent = originalText
         }, 1200)
       }, 400)
     })
@@ -60,5 +65,5 @@ document.querySelector("form").addEventListener("submit", saveOptions)
 
 // On load, always set the button to 'Save' and fixed width
 const saveBtn = document.querySelector(".save-btn")
-saveBtn.innerHTML = "Save"
+saveBtn.textContent = "Save"
 saveBtn.style.minWidth = "110px"
