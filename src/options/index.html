@@ -6,7 +6,7 @@
   </head>
 
   <body>
-    <form class="prefs-form">
+    <div class="prefs-form">
       <div class="form-group">
         <label for="email"
           >Email address <span class="required">*</span>:</label
@@ -41,13 +41,10 @@
         </label>
       </div>
       
-      <div class="form-actions">
-        <button type="submit" class="save-btn">💾 Save</button>
+      <div id="save-status" class="save-status" style="display: none;">
+        <span class="save-indicator">Saved</span>
       </div>
-      <div id="save-animation" class="save-animation" style="display: none">
-        ✔️ Saved!
-      </div>
-    </form>
+    </div>
 
     <div class="Spoiler">
       <span class="required">*</span> The email address is only saved on this

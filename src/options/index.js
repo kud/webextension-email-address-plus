@@ -1,42 +1,38 @@
-const saveOptions = async (e) => {
-  e.preventDefault()
+// Auto-save functionality
+let saveTimeout = null
 
-  // Force blur to ensure autofill value is committed
+const showSaveIndicator = () => {
+  const saveStatus = document.querySelector("#save-status")
+  const saveIndicator = document.querySelector(".save-indicator")
+  
+  saveStatus.style.display = "flex"
+  saveIndicator.classList.add("show")
+  
+  setTimeout(() => {
+    saveIndicator.classList.remove("show")
+    setTimeout(() => {
+      saveStatus.style.display = "none"
+    }, 300)
+  }, 1500)
+}
+
+const autoSave = async () => {
   const emailInput = document.querySelector("#email")
-  emailInput.blur()
+  const domainModeSelect = document.querySelector("#domainMode")
+  const showHistoryCheckbox = document.querySelector("#showHistory")
 
-  const saveBtn = document.querySelector(".save-btn")
-  const originalText = "Save"
-  const savedText = "Saved!"
-
-  // Enhanced email validation
   const emailValue = emailInput.value.trim()
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   
-  if (!emailValue) {
-    emailInput.classList.add("invalid")
-    emailInput.focus()
-    return
-  } else if (!emailRegex.test(emailValue)) {
-    emailInput.classList.add("invalid")
-    emailInput.focus()
-    // Could add a specific error message here
-    return
-  } else {
-    emailInput.classList.remove("invalid")
-  }
-
-  // Set loading state
-  saveBtn.classList.add("saving")
-  // Create spinner element safely
-  const spinner = document.createElement("span")
-  spinner.className = "spinner"
-  spinner.setAttribute("aria-label", "Loading")
+  // Clear previous invalid state
+  emailInput.classList.remove("invalid")
   
-  saveBtn.textContent = ""
-  saveBtn.appendChild(spinner)
-  saveBtn.appendChild(document.createTextNode("Save"))
-
+  // Only validate email if it's not empty
+  if (emailValue && !emailRegex.test(emailValue)) {
+    emailInput.classList.add("invalid")
+    return // Don't save invalid email
+  }
+  
   // Get browser API with compatibility
   const getBrowserAPI = () => {
     if (typeof browser !== 'undefined' && browser.storage) {
@@ -51,26 +47,22 @@ const saveOptions = async (e) => {
     const api = getBrowserAPI()
     await api.storage.local.set({
       email: emailValue,
-      domainMode: document.querySelector("#domainMode").value,
-      showHistory: document.querySelector("#showHistory").checked,
+      domainMode: domainModeSelect.value,
+      showHistory: showHistoryCheckbox.checked,
     })
     
-    setTimeout(() => {
-      // Show Saved!
-      saveBtn.classList.remove("saving")
-      saveBtn.textContent = savedText
-      setTimeout(() => {
-        saveBtn.textContent = originalText
-      }, 1200)
-    }, 400)
+    // Show save indicator only if email is valid
+    if (!emailValue || emailRegex.test(emailValue)) {
+      showSaveIndicator()
+    }
   } catch (error) {
-    console.error("Failed to save options:", error)
-    saveBtn.classList.remove("saving")
-    saveBtn.textContent = "Error!"
-    setTimeout(() => {
-      saveBtn.textContent = originalText
-    }, 2000)
+    console.error("Failed to auto-save options:", error)
   }
+}
+
+const debouncedAutoSave = () => {
+  clearTimeout(saveTimeout)
+  saveTimeout = setTimeout(autoSave, 500) // Wait 500ms after last change
 }
 
 const restoreOptions = async () => {
@@ -197,13 +189,18 @@ const updatePreview = () => {
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions)
-document.querySelector("form").addEventListener("submit", saveOptions)
 
-// Add event listeners for preview
-document.querySelector("#email").addEventListener("input", updatePreview)
-document.querySelector("#domainMode").addEventListener("change", updatePreview)
+// Add event listeners for auto-save and preview
+document.querySelector("#email").addEventListener("input", () => {
+  debouncedAutoSave()
+  updatePreview()
+})
 
-// On load, always set the button to 'Save' and fixed width
-const saveBtn = document.querySelector(".save-btn")
-saveBtn.textContent = "Save"
-saveBtn.style.minWidth = "110px"
+document.querySelector("#domainMode").addEventListener("change", () => {
+  autoSave() // Immediate save for dropdown changes
+  updatePreview()
+})
+
+document.querySelector("#showHistory").addEventListener("change", () => {
+  autoSave() // Immediate save for checkbox changes
+})
