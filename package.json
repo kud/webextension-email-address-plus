@@ -19,9 +19,8 @@
     "build": "rm -rf web-ext-artifacts/* 2>/dev/null || true && web-ext build --source-dir=. --artifacts-dir=web-ext-artifacts",
     "build:clean": "rm -rf web-ext-artifacts node_modules/.cache",
     "lint": "web-ext lint",
-    "sign": "web-ext sign --channel=unlisted",
-    "sign:help": "echo 'To sign: 1) Get API credentials from https://addons.mozilla.org/developers/addon/api/key/ 2) Run: web-ext sign --api-key=YOUR_KEY --api-secret=YOUR_SECRET --channel=unlisted'",
-    "publish": "open https://addons.mozilla.org/en-US/developers/addon/email-address-plus/edit",
+    "publish": "web-ext sign --channel=listed",
+    "publish:help": "echo 'To publish: 1) Get API credentials from https://addons.mozilla.org/developers/addon/api/key/ 2) Run: web-ext sign --api-key=YOUR_KEY --api-secret=YOUR_SECRET --channel=listed'",
     "format": "prettier --write \"**/*.{js,json,html,css,md}\"",
     "format:check": "prettier --check \"**/*.{js,json,html,css,md}\""
   },
