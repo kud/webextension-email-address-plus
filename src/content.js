@@ -264,8 +264,14 @@
   document.addEventListener("contextmenu", (event) => {
     const target = event.target
 
-    // Store only email input fields as the target
-    if (target.tagName === "INPUT" && target.type === "email") {
+    // Store any input field as the target (for context menu functionality)
+    if (
+      target.tagName === "INPUT" &&
+      (target.type === "text" ||
+        target.type === "email" ||
+        target.type === "search" ||
+        !target.type)
+    ) {
       contextMenuTarget = target
     } else {
       contextMenuTarget = null
