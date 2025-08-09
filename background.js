@@ -1,39 +1,57 @@
 /* Handle icon */
-browser.theme.getCurrent().then((theme) => {
-  let iconPath
-
-  // Set the icon path based on the current theme
-  if (theme.properties?.color_scheme === "dark") {
-    iconPath = "icons/icon-dark.svg"
-  } else {
-    iconPath = "icons/icon.svg"
-  }
-
-  // Set the icon for the current tab
-  browser.browserAction.setIcon({
-    path: iconPath,
-  })
-})
-
-// Dynamically update icon when theme changes (Firefox only)
-if (browser && browser.theme && browser.theme.onUpdated) {
-  browser.theme.onUpdated.addListener(() => {
-    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+const updateIcon = async () => {
+  try {
+    const theme = await browser.theme.getCurrent()
+    console.log("Current theme:", theme)
+    
+    let isDark = false
+    
+    // Check toolbar color brightness 
+    const toolbarColor = theme.colors?.toolbar || "rgb(255, 255, 255)"
+    console.log("Toolbar color:", toolbarColor)
+    
+    if (toolbarColor.includes("rgb(")) {
+      const rgb = toolbarColor.match(/rgb\(([^)]+)\)/)
+      if (rgb) {
+        const [r, g, b] = rgb[1].split(",").map(v => parseFloat(v.trim()))
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000
+        isDark = brightness < 128
+        console.log("RGB:", r, g, b, "Brightness:", brightness, "isDark:", isDark)
+      }
+    }
+    
+    const iconPath = isDark ? "icons/icon-dark.svg" : "icons/icon.svg"
+    console.log("Setting icon to:", iconPath)
+    
     browser.browserAction.setIcon({
-      path: isDark
-        ? {
-            16: "icons/icon-dark.svg",
-            32: "icons/icon-dark.svg",
-            48: "icons/icon-dark.svg",
-          }
-        : {
-            16: "icons/icon.svg",
-            32: "icons/icon.svg",
-            48: "icons/icon.svg",
-          },
+      path: {
+        "16": iconPath,
+        "32": iconPath,
+        "48": iconPath
+      }
     })
-  })
+  } catch (error) {
+    console.error("Icon update failed:", error)
+    browser.browserAction.setIcon({ path: "icons/icon.svg" })
+  }
 }
+
+// Set initial icon
+updateIcon()
+
+// Update when theme changes
+browser.theme.onUpdated.addListener(updateIcon)
+
+// Update when switching tabs (adaptive colors change per site)
+browser.tabs.onActivated.addListener(updateIcon)
+
+// Update when tab content changes
+browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
+  if (changeInfo.status === 'complete') {
+    // Small delay to let adaptive tab color do its thing
+    setTimeout(updateIcon, 100)
+  }
+})
 
 /* Handle Click */
 const getHostnameByTab = (tab) => new URL(tab.url).hostname
