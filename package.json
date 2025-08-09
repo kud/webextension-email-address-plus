@@ -21,6 +21,7 @@
     "lint": "web-ext lint",
     "publish": "web-ext sign --channel=listed",
     "publish:help": "echo 'To publish: 1) Get API credentials from https://addons.mozilla.org/developers/addon/api/key/ 2) Run: web-ext sign --api-key=YOUR_KEY --api-secret=YOUR_SECRET --channel=listed'",
+    "version": "node -e \"const pkg=require('./package.json'); const manifest=require('./manifest.json'); manifest.version=pkg.version; require('fs').writeFileSync('manifest.json', JSON.stringify(manifest, null, 2) + '\\n'); console.log('Updated manifest.json to version', pkg.version);\" && git add manifest.json",
     "format": "prettier --write \"**/*.{js,json,html,css,md}\"",
     "format:check": "prettier --check \"**/*.{js,json,html,css,md}\""
   },
