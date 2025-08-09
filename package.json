@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "web-ext run --firefox=nightly",
     "dev:chrome": "web-ext run --target=chromium",
-    "build": "rm -rf web-ext-artifacts/* 2>/dev/null || true && web-ext build",
+    "build": "rm -rf web-ext-artifacts/* 2>/dev/null || true && web-ext build --source-dir=. --artifacts-dir=web-ext-artifacts",
     "build:clean": "rm -rf web-ext-artifacts node_modules/.cache",
     "lint": "web-ext lint",
     "sign": "web-ext sign",

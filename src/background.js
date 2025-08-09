@@ -20,7 +20,7 @@ const updateIcon = async () => {
       }
     }
     
-    const iconPath = isDark ? "icons/icon-dark.svg" : "icons/icon.svg"
+    const iconPath = isDark ? "src/icons/icon-dark.svg" : "src/icons/icon.svg"
     console.log("Setting icon to:", iconPath)
     
     browser.browserAction.setIcon({
@@ -32,7 +32,7 @@ const updateIcon = async () => {
     })
   } catch (error) {
     console.error("Icon update failed:", error)
-    browser.browserAction.setIcon({ path: "icons/icon.svg" })
+    browser.browserAction.setIcon({ path: "src/icons/icon.svg" })
   }
 }
 
