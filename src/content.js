@@ -264,8 +264,8 @@
   document.addEventListener("contextmenu", (event) => {
     const target = event.target
 
-    // Store only email-related input fields as the target
-    if (target.tagName === "INPUT" && isEmailField(target)) {
+    // Store only email input fields as the target
+    if (target.tagName === "INPUT" && target.type === "email") {
       contextMenuTarget = target
     } else {
       contextMenuTarget = null
@@ -295,60 +295,10 @@
     return true // Keep the message channel open for async response
   })
 
-  // Check if an input field is likely an email field
-  const isEmailField = (input) => {
-    // First check: input type is email
-    if (input.type === "email") {
-      return true
-    }
-
-    // Second check: only for text inputs or inputs without type, check for email-related attributes
-    if (input.type === "text" || !input.type) {
-      // Check for email-related names, ids, or placeholders
-      const emailRelated =
-        input.name?.toLowerCase().includes("email") ||
-        input.id?.toLowerCase().includes("email") ||
-        input.placeholder?.toLowerCase().includes("email") ||
-        input.name?.toLowerCase().includes("mail") ||
-        input.id?.toLowerCase().includes("mail") ||
-        input.placeholder?.toLowerCase().includes("mail")
-
-      if (emailRelated) {
-        return true
-      }
-
-      // Check for username/login fields that have email context
-      const isUsernameField =
-        input.name?.toLowerCase().includes("username") ||
-        input.id?.toLowerCase().includes("username") ||
-        input.name?.toLowerCase().includes("login") ||
-        input.id?.toLowerCase().includes("login") ||
-        input.name?.toLowerCase().includes("user") ||
-        input.id?.toLowerCase().includes("user")
-
-      if (isUsernameField) {
-        // Check if this username field has email context
-        const hasEmailContext =
-          input.placeholder?.toLowerCase().includes("email") ||
-          input.title?.toLowerCase().includes("email") ||
-          input.getAttribute("aria-label")?.toLowerCase().includes("email") ||
-          // Look for nearby labels that mention email
-          document
-            .querySelector(`label[for="${input.id}"]`)
-            ?.textContent?.toLowerCase()
-            .includes("email")
-
-        return hasEmailContext
-      }
-    }
-
-    return false
-  }
-
   // Focus and blur event listeners for floating icon
   document.addEventListener("focusin", async (event) => {
     const target = event.target
-    if (target.tagName === "INPUT" && isEmailField(target)) {
+    if (target.tagName === "INPUT" && target.type === "email") {
       // Check if floating icon is enabled in settings
       try {
         const { showFloatingIcon: iconEnabled } = await api.storage.local.get([
