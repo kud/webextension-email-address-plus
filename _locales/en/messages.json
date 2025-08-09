@@ -10,7 +10,7 @@
   },
 
   "extensionAction": {
-    "message": "Copy email address",
+    "message": "Copy labeled email address",
     "description": "Description of the action."
   }
 }

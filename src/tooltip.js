@@ -122,7 +122,7 @@
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(labeledEmail)
         title.textContent = "📧 Email address copied"
-        subtitle.textContent = "You can now paste it where you need."
+        subtitle.textContent = `${labeledEmail} • Ready to paste`
       } else {
         // Fallback for non-secure contexts
         const textArea = document.createElement("textarea")
@@ -132,7 +132,7 @@
         document.execCommand("copy")
         document.body.removeChild(textArea)
         title.textContent = "📧 Email address copied"
-        subtitle.textContent = "You can now paste it where you need."
+        subtitle.textContent = `${labeledEmail} • Ready to paste`
       }
       subtitle.classList.remove("error")
     } catch (e) {
@@ -142,6 +142,19 @@
       subtitle.classList.add("error")
     }
   }
-  // Auto-close after 2s
-  setTimeout(() => window.close(), 2000)
+  // Settings button functionality
+  const settingsBtn = document.getElementById("settings-btn")
+  if (settingsBtn) {
+    settingsBtn.addEventListener("click", () => {
+      // Open options page
+      if (typeof browser !== 'undefined' && browser.runtime) {
+        browser.runtime.openOptionsPage()
+      } else if (typeof chrome !== 'undefined' && chrome.runtime) {
+        chrome.runtime.openOptionsPage()
+      }
+    })
+  }
+  
+  // Auto-close after 4s
+  setTimeout(() => window.close(), 4000)
 })()
