@@ -52,6 +52,7 @@ const saveOptions = async (e) => {
     await api.storage.local.set({
       email: emailValue,
       domainMode: document.querySelector("#domainMode").value,
+      showHistory: document.querySelector("#showHistory").checked,
     })
     
     setTimeout(() => {
@@ -84,19 +85,24 @@ const restoreOptions = async () => {
     }
     
     const api = getBrowserAPI()
-    const { email, domainMode } = await api.storage.local.get([
+    const { email, domainMode, showHistory } = await api.storage.local.get([
       "email",
       "domainMode",
+      "showHistory",
     ])
 
     const emailInput = document.querySelector("#email")
     const domainModeSelect = document.querySelector("#domainMode")
+    const showHistoryCheckbox = document.querySelector("#showHistory")
     
     if (email && emailInput) {
       emailInput.value = email
     }
     if (domainMode && domainModeSelect) {
       domainModeSelect.value = domainMode
+    }
+    if (showHistoryCheckbox) {
+      showHistoryCheckbox.checked = showHistory !== false // Default to true
     }
     
     // Update preview after restoring values
@@ -167,18 +173,26 @@ const updatePreview = () => {
     { hostname: "mail.google.com", name: "Gmail" }
   ]
   
-  let previewHTML = ""
+  previewDiv.innerHTML = ""
   sampleSites.forEach(site => {
     const generatedEmail = generatePreviewEmail(email, site.hostname, domainMode)
-    previewHTML += `
-      <div class="preview-item">
-        <span class="preview-label">${site.name}:</span>
-        <span class="preview-email">${generatedEmail}</span>
-      </div>
-    `
+    
+    const previewItem = document.createElement("div")
+    previewItem.className = "preview-item"
+    
+    const labelSpan = document.createElement("span")
+    labelSpan.className = "preview-label"
+    labelSpan.textContent = site.name + ":"
+    
+    const emailSpan = document.createElement("span")
+    emailSpan.className = "preview-email"
+    emailSpan.textContent = generatedEmail
+    
+    previewItem.appendChild(labelSpan)
+    previewItem.appendChild(emailSpan)
+    
+    previewDiv.appendChild(previewItem)
   })
-  
-  previewDiv.innerHTML = previewHTML
   previewGroup.style.display = "block"
 }
 

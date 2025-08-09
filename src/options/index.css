@@ -187,6 +187,21 @@ input[type="email"].invalid {
   color: #2c5aa0;
 }
 
+.checkbox-input {
+  margin-right: 8px;
+  margin-left: 0;
+  width: auto;
+  cursor: pointer;
+}
+
+.checkbox-input + label,
+label:has(.checkbox-input) {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 400;
+}
+
 .Spoiler {
   font-style: italic;
   margin-top: 10px;
@@ -241,6 +256,9 @@ input[type="email"].invalid {
   }
   .preview-email {
     color: #7db3f0;
+  }
+  .checkbox-input {
+    accent-color: #4f8cff;
   }
   .Spoiler {
     color: #b0b0b0;

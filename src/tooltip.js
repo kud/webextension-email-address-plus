@@ -93,10 +93,102 @@
     return label.replace(/[^a-zA-Z0-9.-]/g, "").toLowerCase()
   }
   
+  // Email history management
+  const MAX_HISTORY_ITEMS = 3
+  
+  const saveEmailToHistory = async (emailAddress) => {
+    try {
+      const result = await getStorageData(["emailHistory"])
+      let history = result.emailHistory || []
+      
+      // Remove if already exists (move to front)
+      history = history.filter(item => item !== emailAddress)
+      
+      // Add to front
+      history.unshift(emailAddress)
+      
+      // Keep only MAX_HISTORY_ITEMS
+      if (history.length > MAX_HISTORY_ITEMS) {
+        history = history.slice(0, MAX_HISTORY_ITEMS)
+      }
+      
+      // Save back to storage
+      if (typeof browser !== 'undefined' && browser.storage) {
+        await browser.storage.local.set({ emailHistory: history })
+      } else if (typeof chrome !== 'undefined' && chrome.storage) {
+        await chrome.storage.local.set({ emailHistory: history })
+      }
+    } catch (error) {
+      console.error("Failed to save email to history:", error)
+    }
+  }
+  
+  const renderEmailHistory = async () => {
+    try {
+      const result = await getStorageData(["emailHistory", "showHistory"])
+      const history = result.emailHistory || []
+      const showHistory = result.showHistory !== false // Default to true
+      
+      const historySection = document.getElementById("history-section")
+      const historyList = document.getElementById("history-list")
+      
+      if (!showHistory || history.length === 0) {
+        historySection.style.display = "none"
+        return
+      }
+      
+      historyList.innerHTML = ""
+      
+      history.forEach(email => {
+        const item = document.createElement("div")
+        item.className = "history-item"
+        
+        const emailSpan = document.createElement("span")
+        emailSpan.className = "history-email"
+        emailSpan.textContent = email
+        
+        const copyBtn = document.createElement("button")
+        copyBtn.className = "history-copy-btn"
+        copyBtn.textContent = "Copy"
+        copyBtn.addEventListener("click", async () => {
+          try {
+            if (navigator.clipboard && window.isSecureContext) {
+              await navigator.clipboard.writeText(email)
+            } else {
+              const textArea = document.createElement("textarea")
+              textArea.value = email
+              document.body.appendChild(textArea)
+              textArea.select()
+              document.execCommand("copy")
+              document.body.removeChild(textArea)
+            }
+            copyBtn.textContent = "✓"
+            setTimeout(() => {
+              copyBtn.textContent = "Copy"
+            }, 1000)
+          } catch (e) {
+            console.error("Failed to copy from history:", e)
+          }
+        })
+        
+        item.appendChild(emailSpan)
+        item.appendChild(copyBtn)
+        historyList.appendChild(item)
+      })
+      
+      historySection.style.display = "block"
+    } catch (error) {
+      console.error("Failed to render email history:", error)
+    }
+  }
+  
   // Success animation function
   const showSuccessAnimation = (labeledEmail) => {
     const title = document.getElementById("card-title")
     const subtitle = document.getElementById("card-subtitle")
+    
+    // Save to history
+    saveEmailToHistory(labeledEmail)
     
     // Wait a bit for tooltip to display before starting animation
     setTimeout(() => {
@@ -164,6 +256,9 @@
       }
     })
   }
+  
+  // Render email history
+  renderEmailHistory()
   
   // Auto-close after 4s
   setTimeout(() => window.close(), 4000)

@@ -63,6 +63,61 @@
   margin-right: 4px;
 }
 
+.history-section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e6;
+}
+
+.history-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.history-email {
+  font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+  color: #333;
+  word-break: break-all;
+  flex: 1;
+  margin-right: 8px;
+}
+
+.history-copy-btn {
+  background: #0060df;
+  color: white;
+  border: none;
+  padding: 3px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.history-copy-btn:hover {
+  background: #0250bb;
+}
+
 @keyframes checkmarkBounce {
   0% {
     transform: scale(0);
@@ -95,5 +150,23 @@
   }
   .settings-btn:hover {
     background-color: rgba(255, 255, 255, 0.1);
+  }
+  .history-section {
+    border-top: 1px solid #444a57;
+  }
+  .history-title {
+    color: #b0b0b0;
+  }
+  .history-item {
+    background: #2a3441;
+  }
+  .history-email {
+    color: #f4f4f4;
+  }
+  .history-copy-btn {
+    background: #4f8cff;
+  }
+  .history-copy-btn:hover {
+    background: #2563eb;
   }
 }
