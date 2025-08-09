@@ -184,18 +184,8 @@ const handleClick = async (tab) => {
     const trimmedEmail = (emailAddress || "").trim()
     
     if (trimmedEmail) {
-      const labeledEmail = getLabeledEmailAddress(trimmedEmail, hostname, domainMode || "main")
-      
-      // Try to copy to clipboard (background script context)
-      if (typeof navigator !== 'undefined' && navigator.clipboard) {
-        try {
-          await navigator.clipboard.writeText(labeledEmail)
-        } catch (e) {
-          console.warn("Clipboard write failed in background:", e)
-        }
-      }
-      
       // Open popup programmatically (Chrome only)
+      // The popup will handle email generation and copying
       const api = getBrowserAPI()
       if (api === chrome && chrome.browserAction?.openPopup) {
         try {
