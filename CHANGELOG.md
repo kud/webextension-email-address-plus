@@ -1,4 +1,11 @@
-## [4.1.2] - 2025-08-09
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [5.0.0] - 2025-08-09
 
 ### Added
 - Context menu integration: Right-click on any input field to fill with labeled email
@@ -15,11 +22,6 @@
 - Context menu now works reliably across all input field types
 - Floating icon positioning updates correctly on scroll and resize
 - Proper message handling between content script and background script
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [4.0.6] - 2025-08-09
 
