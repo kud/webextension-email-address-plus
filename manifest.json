@@ -2,37 +2,37 @@
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "4.0.0",
+  "version": "4.0.5",
   "default_locale": "en",
-
   "browser_specific_settings": {
     "gecko": {
       "id": "email-address-plus@kud.io"
     }
   },
-
   "browser_action": {
     "default_title": "__MSG_extensionAction__",
     "default_popup": "src/tooltip.html"
   },
-
-  "permissions": ["activeTab", "storage", "clipboardWrite", "theme"],
-
+  "permissions": [
+    "activeTab",
+    "storage",
+    "clipboardWrite",
+    "theme"
+  ],
   "background": {
-    "scripts": ["src/background.js"]
+    "scripts": [
+      "src/background.js"
+    ]
   },
-
   "options_ui": {
     "page": "src/options/index.html",
     "browser_style": true
   },
-
   "icons": {
     "16": "src/icons/icon.svg",
     "32": "src/icons/icon.svg",
     "48": "src/icons/icon.svg"
   },
-
   "commands": {
     "copy-labeled-email": {
       "suggested_key": {
