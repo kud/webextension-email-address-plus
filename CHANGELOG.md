@@ -1,4 +1,7 @@
-# Changelog
+## [4.0.6] - 2025-08-09
+
+### Changed
+- Version bump
 
 All notable changes to this project will be documented in this file.
 
