@@ -1,6 +1,8 @@
-require('dotenv').config({ path: '.env.local' });
+import { config } from 'dotenv';
 
-module.exports = {
+config({ path: '.env.local' });
+
+export default {
   sign: {
     apiKey: process.env.WEB_EXT_API_KEY,
     apiSecret: process.env.WEB_EXT_API_SECRET,

@@ -12,6 +12,7 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "type": "module",
   "scripts": {
     "dev": "web-ext run --firefox=nightly",
     "dev:chrome": "web-ext run --target=chromium",
