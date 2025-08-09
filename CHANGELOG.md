@@ -1,7 +1,20 @@
-## [4.0.7] - 2025-08-09
+## [4.1.2] - 2025-08-09
+
+### Added
+- Context menu integration: Right-click on any input field to fill with labeled email
+- Floating icon feature: Shows 📧 icon next to focused input fields for quick filling
+- Direct keyboard shortcut: Ctrl+Shift+Y (Cmd+Shift+Y) now fills focused input field directly
+- Settings option to show/hide floating icon on input fields
 
 ### Changed
-- Version bump
+- Replaced popup keyboard shortcut with direct field filling functionality
+- Enhanced input field detection for better compatibility across websites
+- Improved user experience with multiple convenient filling methods
+
+### Fixed
+- Context menu now works reliably across all input field types
+- Floating icon positioning updates correctly on scroll and resize
+- Proper message handling between content script and background script
 
 All notable changes to this project will be documented in this file.
 

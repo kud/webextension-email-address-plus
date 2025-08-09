@@ -20,6 +20,7 @@ const autoSave = async () => {
   const emailInput = document.querySelector("#email")
   const domainModeSelect = document.querySelector("#domainMode")
   const showHistoryCheckbox = document.querySelector("#showHistory")
+  const showFloatingIconCheckbox = document.querySelector("#showFloatingIcon")
 
   const emailValue = emailInput.value.trim()
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -49,6 +50,7 @@ const autoSave = async () => {
       email: emailValue,
       domainMode: domainModeSelect.value,
       showHistory: showHistoryCheckbox.checked,
+      showFloatingIcon: showFloatingIconCheckbox.checked,
     })
     
     // Show save indicator only if email is valid
@@ -77,15 +79,17 @@ const restoreOptions = async () => {
     }
     
     const api = getBrowserAPI()
-    const { email, domainMode, showHistory } = await api.storage.local.get([
+    const { email, domainMode, showHistory, showFloatingIcon } = await api.storage.local.get([
       "email",
       "domainMode",
       "showHistory",
+      "showFloatingIcon",
     ])
 
     const emailInput = document.querySelector("#email")
     const domainModeSelect = document.querySelector("#domainMode")
     const showHistoryCheckbox = document.querySelector("#showHistory")
+    const showFloatingIconCheckbox = document.querySelector("#showFloatingIcon")
     
     if (email && emailInput) {
       emailInput.value = email
@@ -95,6 +99,9 @@ const restoreOptions = async () => {
     }
     if (showHistoryCheckbox) {
       showHistoryCheckbox.checked = showHistory !== false // Default to true
+    }
+    if (showFloatingIconCheckbox) {
+      showFloatingIconCheckbox.checked = showFloatingIcon !== false // Default to true
     }
     
     // Update preview after restoring values
@@ -202,5 +209,9 @@ document.querySelector("#domainMode").addEventListener("change", () => {
 })
 
 document.querySelector("#showHistory").addEventListener("change", () => {
+  autoSave() // Immediate save for checkbox changes
+})
+
+document.querySelector("#showFloatingIcon").addEventListener("change", () => {
   autoSave() // Immediate save for checkbox changes
 })
