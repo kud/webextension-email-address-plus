@@ -19,9 +19,9 @@
     "build": "rm -rf web-ext-artifacts/* 2>/dev/null || true && web-ext build --source-dir=. --artifacts-dir=web-ext-artifacts",
     "build:clean": "rm -rf web-ext-artifacts node_modules/.cache",
     "lint": "web-ext lint",
-    "publish": "web-ext sign --channel=listed",
+    "publish": "node -e \"const fs=require('fs'); const changelog=fs.readFileSync('CHANGELOG.md','utf8'); const match=changelog.match(/## \\[[^\\]]+\\] - [^\\n]+([\\s\\S]*?)(?=## |$)/); const notes=match?match[1].trim():''; fs.writeFileSync('.amo-metadata.json', JSON.stringify({release_notes:{en:notes}}, null, 2));\" && web-ext sign --channel=listed --upload-source-code --amo-metadata=.amo-metadata.json",
     "publish:help": "echo 'To publish: 1) Get API credentials from https://addons.mozilla.org/developers/addon/api/key/ 2) Run: web-ext sign --api-key=YOUR_KEY --api-secret=YOUR_SECRET --channel=listed'",
-    "version": "node -e \"const pkg=require('./package.json'); const manifest=require('./manifest.json'); manifest.version=pkg.version; require('fs').writeFileSync('manifest.json', JSON.stringify(manifest, null, 2) + '\\n'); console.log('Updated manifest.json to version', pkg.version);\" && git add manifest.json",
+    "version": "node -e \"const pkg=require('./package.json'); const manifest=require('./manifest.json'); manifest.version=pkg.version; require('fs').writeFileSync('manifest.json', JSON.stringify(manifest, null, 2) + '\\n'); const fs=require('fs'); const changelog=fs.readFileSync('CHANGELOG.md','utf8'); const today=new Date().toISOString().split('T')[0]; const newEntry='## ['+pkg.version+'] - '+today+'\\n\\n### Changed\\n- Version bump\\n\\n'; const updated=changelog.replace(/(# Changelog[\\s\\S]*?\\n\\n)/, '$1'+newEntry); fs.writeFileSync('CHANGELOG.md', updated); console.log('Updated manifest.json and CHANGELOG.md to version', pkg.version);\" && git add manifest.json CHANGELOG.md",
     "format": "prettier --write \"**/*.{js,json,html,css,md}\"",
     "format:check": "prettier --check \"**/*.{js,json,html,css,md}\""
   },
