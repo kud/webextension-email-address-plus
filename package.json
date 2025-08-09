@@ -1,7 +1,7 @@
 {
   "name": "webextension-email-address-plus",
   "version": "4.0.7",
-  "description": "Browser extension that adds labels to email addresses for better organization",
+  "description": "Automatically generates labeled email addresses (plus-addressing) based on the current website for better email organization and tracking",
   "private": true,
   "author": "kud",
   "license": "MIT",
