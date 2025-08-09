@@ -93,6 +93,18 @@
     return label.replace(/[^a-zA-Z0-9.-]/g, "").toLowerCase()
   }
   
+  // Success animation function
+  const showSuccessAnimation = (labeledEmail) => {
+    const title = document.getElementById("card-title")
+    const subtitle = document.getElementById("card-subtitle")
+    
+    // Wait a bit for tooltip to display before starting animation
+    setTimeout(() => {
+      title.innerHTML = '<span class="success-checkmark">✅</span>Email address copied'
+      subtitle.textContent = `${labeledEmail} • Ready to paste`
+    }, 200)
+  }
+  
   if (!email) {
     title.textContent = "❌ Email address missing"
     subtitle.textContent = "Please set your email address in the extension preferences."
@@ -121,8 +133,7 @@
     try {
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(labeledEmail)
-        title.textContent = "📧 Email address copied"
-        subtitle.textContent = `${labeledEmail} • Ready to paste`
+        showSuccessAnimation(labeledEmail)
       } else {
         // Fallback for non-secure contexts
         const textArea = document.createElement("textarea")
@@ -131,8 +142,7 @@
         textArea.select()
         document.execCommand("copy")
         document.body.removeChild(textArea)
-        title.textContent = "📧 Email address copied"
-        subtitle.textContent = `${labeledEmail} • Ready to paste`
+        showSuccessAnimation(labeledEmail)
       }
       subtitle.classList.remove("error")
     } catch (e) {

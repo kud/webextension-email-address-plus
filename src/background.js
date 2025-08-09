@@ -176,6 +176,7 @@ const getLabeledEmailAddress = (emailAddress, hostname, domainMode = "main") => 
   return label ? `${preEmail}+${label}@${postEmail}` : emailAddress
 }
 
+
 const handleClick = async (tab) => {
   try {
     const hostname = getHostnameByTab(tab)
