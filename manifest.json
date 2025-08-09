@@ -16,7 +16,7 @@
     "default_popup": "tooltip.html"
   },
 
-  "permissions": ["activeTab", "storage", "clipboardWrite"],
+  "permissions": ["activeTab", "storage", "clipboardWrite", "theme"],
 
   "background": {
     "scripts": ["background.js"]
