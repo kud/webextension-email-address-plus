@@ -7,12 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [5.0.8] - 2025-08-10
 
-### Changed
-- Version bump
+### Improved
+
+- Enhanced dark mode support for the tooltip popup with better theme detection
+- Added explicit dark mode styling using data attributes and CSS classes for improved browser compatibility
+- Improved system dark mode preference detection for extension popups
+- Added color-scheme meta tag support for better native dark mode integration
+
+### Fixed
+
+- Tooltip now properly displays in dark mode across all supported browsers
+- Resolved styling inconsistencies when using dark browser themes
+- Fixed theme detection to work reliably in browser extension popup contexts
 
 ## [5.0.7] - 2025-08-10
 
 ### Changed
+
 - Version bump
 
 ## [5.0.6] - 2025-08-10
