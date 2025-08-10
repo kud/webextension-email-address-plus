@@ -7,48 +7,65 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [5.0.6] - 2025-08-10
 
+### Fixed
+
+- Icon theme detection now works reliably for both light and dark browser themes
+- Fixed parsing of `rgba()` color values from browser theme for accurate brightness calculation
+- Resolved issue where dark theme icons were not displaying correctly in browser toolbars
+
 ### Changed
-- Version bump
+
+- Enhanced theme detection logic to support both `rgb()` and `rgba()` color formats
+- Improved robustness of icon update system with better error handling
+- Cleaned up debug logging in background script for production use
 
 ## [5.0.5] - 2025-08-09
 
 ### Changed
+
 - Version bump
 
 ## [5.0.4] - 2025-08-09
 
 ### Changed
+
 - Version bump
 
 ## [5.0.3] - 2025-08-09
 
 ### Changed
+
 - Version bump
 
 ## [5.0.2] - 2025-08-09
 
 ### Changed
+
 - Version bump
 
 ## [5.0.1] - 2025-08-09
 
 ### Changed
+
 - Version bump
 
 ## [5.0.0] - 2025-08-09
 
 ### Added
+
 - Context menu integration: Right-click on any input field to fill with labeled email
 - Floating icon feature: Shows 📧 icon next to focused input fields for quick filling
 - Direct keyboard shortcut: Ctrl+Shift+Y (Cmd+Shift+Y) now fills focused input field directly
 - Settings option to show/hide floating icon on input fields
 
 ### Changed
+
 - Replaced popup keyboard shortcut with direct field filling functionality
 - Enhanced input field detection for better compatibility across websites
 - Improved user experience with multiple convenient filling methods
 
 ### Fixed
+
 - Context menu now works reliably across all input field types
 - Floating icon positioning updates correctly on scroll and resize
 - Proper message handling between content script and background script
@@ -56,33 +73,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [4.0.6] - 2025-08-09
 
 ### Changed
+
 - Version bump
 
 ## [4.0.5] - 2025-08-09
 
 ### Changed
+
 - Updated publishing workflow to use Mozilla's listed channel for public distribution
 - Automated version synchronization between package.json and manifest.json
 - Enhanced build process with automatic changelog integration for AMO releases
 
 ### Fixed
+
 - Resolved version conflicts during extension publishing
 - Improved deployment pipeline for Mozilla Add-on store submissions
 
 ## [2.0.0] - 2025-08-09
 
 ### Added
+
 - Dynamic icon switching based on browser theme and toolbar colors
 - Support for adaptive tab color extensions
 - Enhanced theme detection using toolbar color brightness analysis
 - Theme permission for better browser integration
 
 ### Changed
+
 - Improved icon update logic to work with dynamic toolbar colors
 - Enhanced background script with better error handling
 - Updated package.json with proper metadata and modern tooling
 
 ### Fixed
+
 - Icon now properly adapts to light/dark themes in real-time
 - Resolved issue where icon wouldn't change with adaptive tab color extensions
 - Fixed theme detection to work with system preferences and custom themes
@@ -90,15 +113,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.0] - Previous Release
 
 ### Added
+
 - Better icon and UK domain handling
 - Dynamic icon update and tooltip for copied email address functionality
 
 ### Changed
+
 - Improved domain handling logic
 
 ## [0.1.0] - Initial Release
 
 ### Added
+
 - Basic email address plus-labeling functionality
 - Browser action with popup
 - Options page for configuration
