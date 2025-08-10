@@ -1,4 +1,4 @@
-/* Handle icon */
+/* Handle Browser API */
 const getBrowserAPI = () => {
   if (typeof browser !== "undefined" && browser.browserAction) {
     return browser
@@ -8,14 +8,17 @@ const getBrowserAPI = () => {
   throw new Error("No browser API available")
 }
 
+/* Handle Theme Detection and Icon Updates */
 const parseRGBColor = (colorString) => {
-  const rgbMatch = colorString.match(/rgb\(([^)]+)\)/)
+  // Handle both rgb() and rgba() formats
+  const rgbMatch = colorString.match(/rgba?\(([^)]+)\)/)
   if (!rgbMatch) return null
 
   const values = rgbMatch[1].split(",").map((v) => parseFloat(v.trim()))
-  if (values.length !== 3 || values.some(isNaN)) return null
+  if (values.length < 3 || values.some(isNaN)) return null
 
-  return values
+  // Return just the first 3 values (RGB, ignore alpha)
+  return [values[0], values[1], values[2]]
 }
 
 const calculateBrightness = (r, g, b) => {
@@ -26,23 +29,79 @@ const calculateBrightness = (r, g, b) => {
 const updateIcon = async () => {
   try {
     const api = getBrowserAPI()
-    const theme = await api.theme.getCurrent()
-
     let isDark = false
 
-    // Check toolbar color brightness
-    const toolbarColor = theme.colors?.toolbar || "rgb(255, 255, 255)"
+    // Method 1: Try theme API (Firefox primarily)
+    try {
+      if (api.theme && api.theme.getCurrent) {
+        const theme = await api.theme.getCurrent()
+        console.log("Theme object:", theme)
 
-    if (toolbarColor.includes("rgb(")) {
-      const rgbValues = parseRGBColor(toolbarColor)
-      if (rgbValues) {
-        const [r, g, b] = rgbValues
-        const brightness = calculateBrightness(r, g, b)
-        isDark = brightness < 128
+        // Check if we have theme colors
+        if (theme && theme.colors) {
+          const toolbarColor =
+            theme.colors.toolbar ||
+            theme.colors.frame ||
+            theme.colors.tab_background_text ||
+            "rgb(255, 255, 255)"
+          console.log("Found toolbar color:", toolbarColor)
+
+          if (toolbarColor.includes("rgb(")) {
+            const rgbValues = parseRGBColor(toolbarColor)
+            if (rgbValues) {
+              const [r, g, b] = rgbValues
+              const brightness = calculateBrightness(r, g, b)
+              isDark = brightness < 128
+              console.log(
+                "Theme API - RGB:",
+                r,
+                g,
+                b,
+                "Brightness:",
+                brightness,
+                "isDark:",
+                isDark,
+              )
+            }
+          } else if (toolbarColor.includes("#")) {
+            // Handle hex colors
+            const hex = toolbarColor.replace("#", "")
+            const r = parseInt(hex.substr(0, 2), 16)
+            const g = parseInt(hex.substr(2, 2), 16)
+            const b = parseInt(hex.substr(4, 2), 16)
+            const brightness = calculateBrightness(r, g, b)
+            isDark = brightness < 128
+            console.log(
+              "Theme API - Hex RGB:",
+              r,
+              g,
+              b,
+              "Brightness:",
+              brightness,
+              "isDark:",
+              isDark,
+            )
+          }
+        } else {
+          console.log("No theme colors found, trying system preference")
+          // Check system preference as fallback
+          if (typeof window !== "undefined" && window.matchMedia) {
+            isDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+            console.log("System preference isDark:", isDark)
+          }
+        }
+      }
+    } catch (themeError) {
+      console.log("Theme API error:", themeError)
+      // Chrome fallback or when theme API fails
+      if (typeof window !== "undefined" && window.matchMedia) {
+        isDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+        console.log("Fallback matchMedia isDark:", isDark)
       }
     }
 
     const iconPath = isDark ? "src/icons/icon-dark.svg" : "src/icons/icon.svg"
+    console.log("Final decision - Using icon:", iconPath, "isDark:", isDark)
 
     await api.browserAction.setIcon({
       path: {
@@ -51,11 +110,14 @@ const updateIcon = async () => {
         48: iconPath,
       },
     })
+
+    console.log("Icon set successfully to:", iconPath)
   } catch (error) {
     console.error("Icon update failed:", error)
     try {
       const api = getBrowserAPI()
       await api.browserAction.setIcon({ path: "src/icons/icon.svg" })
+      console.log("Fallback to default icon")
     } catch (fallbackError) {
       console.error("Fallback icon update failed:", fallbackError)
     }
@@ -122,7 +184,6 @@ const updateIcon = async () => {
         }
       })
     }
-
   } catch (error) {
     console.error("Extension initialization failed:", error)
   }

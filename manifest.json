@@ -21,18 +21,12 @@
     "contextMenus"
   ],
   "background": {
-    "scripts": [
-      "src/background.js"
-    ]
+    "scripts": ["src/background.js"]
   },
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "src/content.js"
-      ],
+      "matches": ["<all_urls>"],
+      "js": ["src/content.js"],
       "run_at": "document_idle"
     }
   ],
