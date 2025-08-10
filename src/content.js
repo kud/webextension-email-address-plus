@@ -86,17 +86,19 @@
       targetElement.dispatchEvent(inputEvent)
       targetElement.dispatchEvent(changeEvent)
 
-      // Brief highlight to show what was filled
-      const originalBackground = targetElement.style.backgroundColor
-      targetElement.style.backgroundColor = "#e8f5e8"
-      targetElement.style.transition = "background-color 0.3s ease"
+      // Brief shiny shadow animation to show what was filled
+      const originalBoxShadow = targetElement.style.boxShadow
+      const originalTransition = targetElement.style.transition
+      targetElement.style.transition = "box-shadow 0.25s ease"
+      targetElement.style.boxShadow =
+        "0 0 12px rgba(59, 130, 246, 0.6), 0 0 24px rgba(59, 130, 246, 0.4)"
 
       setTimeout(() => {
-        targetElement.style.backgroundColor = originalBackground
+        targetElement.style.boxShadow = originalBoxShadow
         setTimeout(() => {
-          targetElement.style.transition = ""
-        }, 300)
-      }, 1000)
+          targetElement.style.transition = originalTransition
+        }, 250)
+      }, 750)
 
       return true
     } catch (error) {
