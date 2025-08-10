@@ -68,6 +68,78 @@
     return [...new Set(emailInputs)]
   }
 
+  // Show tooltip for when email is not configured
+  const showTooltip = (targetElement, message) => {
+    if (!targetElement) return
+
+    // Remove any existing tooltip
+    const existingTooltip = document.querySelector(".email-plus-tooltip")
+    if (existingTooltip) {
+      existingTooltip.remove()
+    }
+
+    // Create tooltip element
+    const tooltip = document.createElement("div")
+    tooltip.className = "email-plus-tooltip"
+    tooltip.textContent = message
+    tooltip.style.cssText = `
+      position: absolute;
+      z-index: 10001;
+      background: #333;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    `
+
+    // Add arrow
+    const arrow = document.createElement("div")
+    arrow.style.cssText = `
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid #333;
+    `
+    tooltip.appendChild(arrow)
+
+    document.body.appendChild(tooltip)
+
+    // Position tooltip above the input
+    const rect = targetElement.getBoundingClientRect()
+    const scrollX = window.pageXOffset || document.documentElement.scrollLeft
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop
+
+    tooltip.style.left =
+      rect.left + scrollX + rect.width / 2 - tooltip.offsetWidth / 2 + "px"
+    tooltip.style.top = rect.top + scrollY - tooltip.offsetHeight - 8 + "px"
+
+    // Show tooltip with animation
+    setTimeout(() => {
+      tooltip.style.opacity = "1"
+    }, 10)
+
+    // Hide tooltip after 3 seconds
+    setTimeout(() => {
+      tooltip.style.opacity = "0"
+      setTimeout(() => {
+        if (tooltip.parentNode) {
+          tooltip.remove()
+        }
+      }, 200)
+    }, 3000)
+  }
+
   // Fill email field with labeled email
   const fillEmailField = (targetElement, labeledEmail) => {
     if (!targetElement || !labeledEmail) return false
@@ -217,6 +289,12 @@
               domainMode || "main",
             )
             fillEmailField(currentFocusedInput, labeledEmail)
+          } else if (!trimmedEmail) {
+            // Show tooltip when no email is configured
+            showTooltip(
+              currentFocusedInput,
+              "Please configure your email address in the extension settings first",
+            )
           }
         } catch (error) {
           console.error("Failed to generate labeled email:", error)
@@ -289,6 +367,23 @@
       const focusedElement = document.activeElement
       const success = fillEmailField(focusedElement, request.labeledEmail)
       sendResponse({ success })
+    } else if (request.action === "showNoEmailTooltip") {
+      // Show tooltip when no email is configured
+      if (request.target === "contextMenu" && contextMenuTarget) {
+        showTooltip(
+          contextMenuTarget,
+          "Please configure your email address in the extension settings first",
+        )
+      } else if (request.target === "focusedField") {
+        const focusedElement = document.activeElement
+        if (focusedElement && focusedElement.tagName === "INPUT") {
+          showTooltip(
+            focusedElement,
+            "Please configure your email address in the extension settings first",
+          )
+        }
+      }
+      sendResponse({ success: true })
     } else if (request.action === "hasEmailFields") {
       const emailInputs = findEmailInputs()
       sendResponse({ hasEmailFields: emailInputs.length > 0 })

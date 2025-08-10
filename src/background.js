@@ -291,6 +291,17 @@ const handleContextMenuClick = async (tab) => {
       } catch (error) {
         console.error("Failed to communicate with content script:", error)
       }
+    } else if (!trimmedEmail) {
+      // Send message to show tooltip when no email is configured
+      const api = getBrowserAPI()
+      try {
+        await api.tabs.sendMessage(tab.id, {
+          action: "showNoEmailTooltip",
+          target: "contextMenu",
+        })
+      } catch (error) {
+        console.error("Failed to communicate with content script:", error)
+      }
     }
   } catch (error) {
     console.error("Context menu click failed:", error)
@@ -319,6 +330,17 @@ const handleFillFocusedField = async (tab) => {
         await api.tabs.sendMessage(tab.id, {
           action: "fillFocusedField",
           labeledEmail: labeledEmail,
+        })
+      } catch (error) {
+        console.error("Failed to communicate with content script:", error)
+      }
+    } else if (!trimmedEmail) {
+      // Send message to show tooltip when no email is configured
+      const api = getBrowserAPI()
+      try {
+        await api.tabs.sendMessage(tab.id, {
+          action: "showNoEmailTooltip",
+          target: "focusedField",
         })
       } catch (error) {
         console.error("Failed to communicate with content script:", error)
