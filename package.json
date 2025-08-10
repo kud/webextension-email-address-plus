@@ -1,6 +1,6 @@
 {
   "name": "webextension-email-address-plus",
-  "version": "5.0.6",
+  "version": "5.0.7",
   "description": "Automatically generates labeled email addresses (plus-addressing) based on the current website for better email organization and tracking",
   "private": true,
   "author": "kud",
