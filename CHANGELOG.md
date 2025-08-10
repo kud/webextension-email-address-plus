@@ -5,14 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0] - 2025-08-10
+
+### Added
+
+- Visual feedback animation when filling input fields with blue glow effect
+- Smart tooltip system that appears when email address is not configured
+- Comprehensive user guidance for unconfigured extension state
+
+### Improved
+
+- Enhanced input filling animation with subtle blue shadow effect that works on both light and dark backgrounds
+- Better user experience when extension is used before configuration
+- Tooltip positioning and styling for better visibility and user guidance
+
+### Changed
+
+- Replaced background color change animation with elegant shadow-based visual feedback
+- Animation duration and intensity optimized for better user experience
+- All filling methods (floating icon, context menu, keyboard shortcut) now show helpful tooltips when no email is configured
+
+### Fixed
+
+- Visual feedback animation now works consistently across different website themes and backgrounds
+- Proper error handling and user feedback when attempting to use extension without email configuration
+
 ## [5.1.0] - 2025-08-10
 
 ### Changed
+
 - Version bump
 
 ## [5.0.9] - 2025-08-10
 
 ### Changed
+
 - Version bump
 
 ## [5.0.8] - 2025-08-10
