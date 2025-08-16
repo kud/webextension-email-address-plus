@@ -236,36 +236,48 @@
   // Create floating icon element
   const createFloatingIcon = () => {
     const icon = document.createElement("div")
-    icon.innerHTML = "📧"
+    const plusSymbol = document.createElement("span")
+    plusSymbol.textContent = "+"
+    plusSymbol.style.cssText = `
+      display: block;
+      margin-top: -2px;
+    `
+    icon.appendChild(plusSymbol)
     icon.style.cssText = `
       position: absolute;
       z-index: 10000;
-      width: 24px;
-      height: 24px;
-      background: #ffffff;
-      border: 1px solid #ccc;
-      border-radius: 12px;
+      width: 18px;
+      height: 18px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      border: 2px solid #ffffff;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 10px;
+      font-weight: bold;
+      color: white;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
       transition: all 0.2s ease;
-      opacity: 0.8;
+      opacity: 0.9;
+      user-select: none;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     `
 
     // Hover effects
     icon.addEventListener("mouseenter", () => {
       icon.style.opacity = "1"
-      icon.style.transform = "scale(1.1)"
-      icon.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)"
+      icon.style.transform = "scale(1.15)"
+      icon.style.boxShadow = "0 4px 12px rgba(59, 130, 246, 0.5), 0 0 0 2px rgba(59, 130, 246, 0.2)"
+      icon.style.borderColor = "#60a5fa"
     })
 
     icon.addEventListener("mouseleave", () => {
-      icon.style.opacity = "0.8"
+      icon.style.opacity = "0.9"
       icon.style.transform = "scale(1)"
-      icon.style.boxShadow = "0 2px 8px rgba(0,0,0,0.15)"
+      icon.style.boxShadow = "0 2px 6px rgba(59, 130, 246, 0.3)"
+      icon.style.borderColor = "#ffffff"
     })
 
     // Click handler
@@ -313,8 +325,8 @@
     const scrollX = window.pageXOffset || document.documentElement.scrollLeft
     const scrollY = window.pageYOffset || document.documentElement.scrollTop
 
-    floatingIcon.style.left = rect.right + scrollX - 30 + "px"
-    floatingIcon.style.top = rect.top + scrollY + (rect.height - 24) / 2 + "px"
+    floatingIcon.style.left = rect.right + scrollX - 8 + "px"
+    floatingIcon.style.top = rect.top + scrollY - 8 + "px"
   }
 
   // Show floating icon
