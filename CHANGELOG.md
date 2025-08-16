@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.2.2] - 2025-08-16
 
 ### Changed
-- Version bump
+- Updated Node.js engine requirement to version 22.0.0 for latest stable features
+- Increased icon stroke width from 1.1 to 1.3 for improved visibility and consistency
 
 ## [5.2.1] - 2025-08-10
 
