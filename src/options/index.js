@@ -121,7 +121,19 @@ const generateLabel = (hostname, domainMode) => {
   switch (domainMode) {
     case "main":
       if (hostnameArr.length >= 2) {
-        label = hostnameArr.slice(-2).join(".")
+        // Handle common ccTLD patterns like .co.uk, .com.au, etc.
+        if (hostnameArr.length >= 3 && 
+            (hostnameArr[hostnameArr.length - 2] === "co" || 
+             hostnameArr[hostnameArr.length - 2] === "com" || 
+             hostnameArr[hostnameArr.length - 2] === "org" || 
+             hostnameArr[hostnameArr.length - 2] === "net" || 
+             hostnameArr[hostnameArr.length - 2] === "gov" || 
+             hostnameArr[hostnameArr.length - 2] === "edu" || 
+             hostnameArr[hostnameArr.length - 2] === "ac")) {
+          label = hostnameArr.slice(-3).join(".")
+        } else {
+          label = hostnameArr.slice(-2).join(".")
+        }
       }
       break
     case "short":
